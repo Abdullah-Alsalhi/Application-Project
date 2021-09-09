@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  frontend-cassandra:
+    container_name: frontend-cassandra
+    build:
+      context: ./ui/frontend/
+    ports:
+      - 3000:3000
+    environment:
+      - API_URL:http://backend-cassandra:9003:/api/text_field_1/AbdullahAlsalhi
+    volumes:
+      - ./ui/frontend:/app
+    depends_on:
+      - backend-cassandra
+  backend-cassandra:
+    container_name: backend-cassandra
+    build:
+      context: ./spring-boot-cassandra/
+    volumes:
+      - ./spring-boot-cassandra/target:/app
+    ports:
+      - 9003:9003
+  cassandra:
+    container_name: cassandra
+    build:
+      context: .
+      #image: cassandra
+    ports:
+      - 9042:9042
